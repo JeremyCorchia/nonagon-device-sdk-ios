@@ -1,0 +1,4 @@
+framework module NonagonDeviceSDK {
+  header "NonagonDeviceSDK-Swift.h"
+  requires objc
+}

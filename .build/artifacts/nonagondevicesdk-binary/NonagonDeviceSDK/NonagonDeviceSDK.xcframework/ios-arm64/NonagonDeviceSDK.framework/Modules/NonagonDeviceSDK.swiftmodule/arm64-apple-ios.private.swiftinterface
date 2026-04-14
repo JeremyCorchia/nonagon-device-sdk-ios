@@ -1,0 +1,246 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.1 effective-5.10 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)
+// swift-module-flags: -target arm64-apple-ios15.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name NonagonDeviceSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.1
+import AVFoundation
+@_exported import CAlgorithms
+import CoreBluetooth
+import Foundation
+import MediaPlayer
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public let peripheralNameKey: Swift.String
+public struct NonagonDevice {
+  public var deviceID: Swift.String?
+  public var fwVersion: Swift.String?
+  public var batteryState: Swift.Int?
+  public var isOtoscopeExist: Swift.Bool?
+  public var serialNumber: Swift.String?
+  public var fwVersionNumber: Swift.Double {
+    get
+  }
+  public var isNewFirmware: Swift.Bool {
+    get
+  }
+  public func isN9Plus() -> Swift.Bool
+  public enum DeviceType : Swift.String {
+    case n9
+    case n9_plus
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.String)
+    #endif
+    public typealias RawValue = Swift.String
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+}
+public struct DiscoveredDevice {
+  public let name: Swift.String
+  public let deviceId: Swift.String
+}
+@_hasMissingDesignatedInitializers final public class NonagonDeviceSession {
+  public static let shared: NonagonDeviceSDK.NonagonDeviceSession
+  weak final public var connectionDelegate: (any NonagonDeviceSDK.NonagonDeviceDelegate)?
+  weak final public var stethoscopeDelegate: (any NonagonDeviceSDK.NonagonStethoscopeDelegate)?
+  weak final public var oximeterDelegate: (any NonagonDeviceSDK.NonagonOximeterDelegate)?
+  weak final public var thermometerDelegate: (any NonagonDeviceSDK.NonagonThermometerDelegate)?
+  final public var isConnected: Swift.Bool {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public var device: NonagonDeviceSDK.NonagonDevice? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public var currentFileURL: Foundation.URL? {
+    get
+  }
+  #endif
+  final public var isBusy: Swift.Bool {
+    get
+  }
+  final public func scan()
+  final public func connect(deviceId: Swift.String)
+  final public func disconnect(forget: Swift.Bool = false)
+  final public func connect(peripheral: CoreBluetooth.CBPeripheral)
+  @discardableResult
+  final public func startStethoscope() -> Swift.Bool
+  final public func resetStethoscope()
+  final public func resetBusyState()
+  final public func stopStethoscope(saveWav: Swift.Bool = true)
+  final public func startOximeter()
+  final public func stopOximeter()
+  @discardableResult
+  final public func prepareThermometer() -> Swift.Bool
+  @discardableResult
+  final public func startThermometer() -> Swift.Bool
+  final public func stopThermometer()
+  final public func startOtoscopeLED()
+  final public func stopOtoscopeLED()
+  final public var isEnvironmentTooLoud: Swift.Bool {
+    get
+    set
+  }
+  final public func setThermometerCalibration(polynomA: NonagonDeviceSDK.PolynomicStruct, polynomB: NonagonDeviceSDK.PolynomicStruct)
+  @objc deinit
+}
+extension NonagonDeviceSDK.NonagonDeviceSession : NonagonDeviceSDK.NonagonDeviceDelegate {
+  final public func nonagonDidDiscoverDevice(_ peripheral: CoreBluetooth.CBPeripheral)
+  final public func nonagonDidConnect(_ device: NonagonDeviceSDK.NonagonDevice)
+  final public func nonagonDidDisconnect(wasExpected: Swift.Bool)
+  final public func nonagonConnectionFailed()
+  final public func nonagonScanTimedOut()
+  final public func nonagonBatteryLevelUpdated(_ level: Swift.Int)
+}
+extension NonagonDeviceSDK.NonagonDeviceSession : NonagonDeviceSDK.NonagonStethoscopeDelegate {
+  final public func stethoscopeDidStartRecording()
+  final public func stethoscopeDidReceiveAudioPacket(_ packet: NonagonDeviceSDK.ProcessedStethoscopeMessage)
+  final public func stethoscopeDidFinishRecording(urls: [Swift.String : Foundation.URL])
+  final public func stethoscopeTooLoud()
+}
+extension NonagonDeviceSDK.NonagonDeviceSession : NonagonDeviceSDK.NonagonOximeterDelegate {
+  final public func oximeterDidStartMeasuring()
+  final public func oximeterFingerStateChanged(isFingerDetected: Swift.Bool)
+  final public func oximeterDidReceiveMeasurement(_ measurement: NonagonDeviceSDK.OximeterMeasurement)
+}
+extension NonagonDeviceSDK.NonagonDeviceSession : NonagonDeviceSDK.NonagonThermometerDelegate {
+  final public func thermometerDidStartMeasuring()
+  final public func thermometerDidReceiveTemperature(_ temperature: Swift.Double)
+}
+public struct OximeterResult {
+  public var saturation: Swift.Int?
+  public var heartRate: Swift.Int?
+  public var quality: Swift.Double
+  #if compiler(>=5.3) && $NonescapableTypes
+  public init(saturation: Swift.Int?, heartRate: Swift.Int?, quality: Swift.Double)
+  #endif
+}
+@objc public class PolynomicStruct : ObjectiveC.NSObject, Foundation.NSCoding {
+  public var a: Swift.Float, b: Swift.Float, c: Swift.Float, d: Swift.Float, e: Swift.Float
+  public init(a: Swift.Float, b: Swift.Float, c: Swift.Float, d: Swift.Float, e: Swift.Float)
+  @objc public func encode(with aCoder: Foundation.NSCoder)
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc required public init?(coder aDecoder: Foundation.NSCoder)
+  #endif
+  public static func getDefaultPolynomA() -> NonagonDeviceSDK.PolynomicStruct
+  public static func getDefaultPolynomB() -> NonagonDeviceSDK.PolynomicStruct
+  @objc deinit
+}
+public struct ProcessedStethoscopeMessage {
+  public var sig_out_bell: Foundation.Data, sig_out_diaphragm: Foundation.Data, sig_out_extended: Foundation.Data, sig_out_midband: Foundation.Data, srcData: Foundation.Data
+}
+public protocol NonagonDeviceDelegate : AnyObject {
+  func nonagonDidDiscoverDevice(_ peripheral: CoreBluetooth.CBPeripheral)
+  func nonagonDidConnect(_ device: NonagonDeviceSDK.NonagonDevice)
+  func nonagonDidDisconnect(wasExpected: Swift.Bool)
+  func nonagonConnectionFailed()
+  func nonagonScanTimedOut()
+  func nonagonBatteryLevelUpdated(_ level: Swift.Int)
+}
+extension NonagonDeviceSDK.NonagonDeviceDelegate {
+  public func nonagonDidDiscoverDevice(_ peripheral: CoreBluetooth.CBPeripheral)
+  public func nonagonDidConnect(_ device: NonagonDeviceSDK.NonagonDevice)
+  public func nonagonDidDisconnect(wasExpected: Swift.Bool)
+  public func nonagonConnectionFailed()
+  public func nonagonScanTimedOut()
+  public func nonagonBatteryLevelUpdated(_ level: Swift.Int)
+}
+public protocol NonagonStethoscopeDelegate : AnyObject {
+  func stethoscopeDidStartRecording()
+  func stethoscopeDidReceiveAudioPacket(_ packet: NonagonDeviceSDK.ProcessedStethoscopeMessage)
+  func stethoscopeDidFinishRecording(urls: [Swift.String : Foundation.URL])
+  func stethoscopeTooLoud()
+}
+extension NonagonDeviceSDK.NonagonStethoscopeDelegate {
+  public func stethoscopeDidStartRecording()
+  public func stethoscopeDidReceiveAudioPacket(_ packet: NonagonDeviceSDK.ProcessedStethoscopeMessage)
+  public func stethoscopeDidFinishRecording(urls: [Swift.String : Foundation.URL])
+  public func stethoscopeTooLoud()
+}
+public struct OximeterMeasurement {
+  public let heartRate: Swift.Int
+  public let saturation: Swift.Int
+  public let quality: Swift.Double
+  public let isValid: Swift.Bool
+  public init(heartRate: Swift.Int, saturation: Swift.Int, quality: Swift.Double, isValid: Swift.Bool = true)
+}
+public protocol NonagonOximeterDelegate : AnyObject {
+  func oximeterDidStartMeasuring()
+  func oximeterFingerStateChanged(isFingerDetected: Swift.Bool)
+  func oximeterDidReceiveMeasurement(_ measurement: NonagonDeviceSDK.OximeterMeasurement)
+}
+extension NonagonDeviceSDK.NonagonOximeterDelegate {
+  public func oximeterDidStartMeasuring()
+  public func oximeterFingerStateChanged(isFingerDetected: Swift.Bool)
+  public func oximeterDidReceiveMeasurement(_ measurement: NonagonDeviceSDK.OximeterMeasurement)
+}
+public protocol NonagonThermometerDelegate : AnyObject {
+  func thermometerDidStartMeasuring()
+  func thermometerDidReceiveTemperature(_ temperature: Swift.Double)
+}
+extension NonagonDeviceSDK.NonagonThermometerDelegate {
+  public func thermometerDidStartMeasuring()
+  public func thermometerDidReceiveTemperature(_ temperature: Swift.Double)
+}
+public protocol NonagonExamDelegate : NonagonDeviceSDK.NonagonOximeterDelegate, NonagonDeviceSDK.NonagonStethoscopeDelegate, NonagonDeviceSDK.NonagonThermometerDelegate {
+}
+public class RepeatingTimer {
+  public init(timeInterval: Foundation.TimeInterval, queuename: Swift.String)
+  public var eventHandler: (() -> Swift.Void)?
+  @objc deinit
+  public func resume()
+  public func suspend()
+  public func cancel()
+  public func invoke()
+}
+extension Foundation.Data {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func makePCMBuffer(format: AVFAudio.AVAudioFormat) -> AVFAudio.AVAudioPCMBuffer?
+  #endif
+  public func toUInt16Array() -> [Swift.UInt16]
+}
+extension AVFAudio.AVAudioPCMBuffer {
+  public func data() -> Foundation.Data
+}
+extension Foundation.NotificationCenter {
+  public static let NonagonNotificationCenter: Foundation.NotificationCenter
+}
+extension Foundation.NSNotification.Name {
+  public static let background: Foundation.Notification.Name
+  public static let foreground: Foundation.Notification.Name
+  public static let addedDevice: Foundation.Notification.Name
+  public static let firstThermometerResult: Foundation.Notification.Name
+  public static let temperatureReceived: Foundation.Notification.Name
+  public static let temperatureParams: Foundation.Notification.Name
+  public static let oximeterResult: Foundation.Notification.Name
+  public static let heartRateAndSaturationResult: Foundation.Notification.Name
+  public static let connectedSuccessfully: Foundation.Notification.Name
+  public static let connectionAttemptFailed: Foundation.Notification.Name
+  public static let scanTimedOut: Foundation.Notification.Name
+  public static let deviceDisconnected: Foundation.Notification.Name
+  public static let oximeterStartedMeasuring: Foundation.Notification.Name
+  public static let userFingerState: Foundation.Notification.Name
+  public static let stethoscopeButtonPressed: Foundation.Notification.Name
+  public static let wavURLReady: Foundation.Notification.Name
+  public static let batteryLevel: Foundation.Notification.Name
+  public static let steUpsampledPacket: Foundation.Notification.Name
+  public static let refreshLogin: Foundation.Notification.Name
+  public static let gotASignal: Foundation.Notification.Name
+  public static let gotDeviceSerialNumber: Foundation.Notification.Name
+  public static let reloadPatientsData: Foundation.Notification.Name
+  public static let soundMeter: Foundation.Notification.Name
+  public static let tooLoudWhenPressedToStart: Foundation.Notification.Name
+  public static let reliantVisitEnded: Foundation.Notification.Name
+  public static let saturationExamResult: Foundation.Notification.Name
+  public static let syncSession: Foundation.Notification.Name
+  public static let dismissVideoPlayer: Foundation.Notification.Name
+  public static let autoLogout: Foundation.Notification.Name
+  public static let autoLogin: Foundation.Notification.Name
+}
+extension NonagonDeviceSDK.NonagonDevice.DeviceType : Swift.Equatable {}
+extension NonagonDeviceSDK.NonagonDevice.DeviceType : Swift.Hashable {}
+extension NonagonDeviceSDK.NonagonDevice.DeviceType : Swift.RawRepresentable {}

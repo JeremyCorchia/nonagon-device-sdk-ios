@@ -2,7 +2,7 @@
 
 import PackageDescription
 
-let version = "1.1.5"
+let version = "1.1.6"
 
 let package = Package(
     name: "NonagonDeviceSDK",
@@ -14,7 +14,7 @@ let package = Package(
         .binaryTarget(
             name: "NonagonDeviceSDK",
             url: "https://github.com/JeremyCorchia/nonagon-device-sdk-ios/releases/download/\(version)/NonagonDeviceSDK.xcframework.zip",
-            checksum: "b6c49f57c4b854b897072e9a71f6922593f8d622b48f33929f8f723682bd5b7f"
+            checksum: "a666592e5b3c3f4529ced6116f954f57266e888f8da2283c0cc833ad1adaed19"
         ),
     ]
 )
